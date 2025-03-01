@@ -2,7 +2,7 @@
 #define CHANNEL_H
 #include <functional>
 #include <memory>
-#include <sys/poll.h>
+#include <sys/epoll.h>
 
 #include "noncopyable.h"
 #include "Timestamp.h"
@@ -18,6 +18,9 @@ class Channel: noncopyable {
 public:
     using EventCallback = std::function<void()>;
     using ReadEventCallback = std::function<void(Timestamp)>;
+
+    Channel(EventLoop* loop,int fd);
+    ~Channel();
 
     void handleEvent(Timestamp timestamp);
     // 设置回调函数对象
