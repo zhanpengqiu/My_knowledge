@@ -33,7 +33,4 @@ private:
     ThreadInitCallback callback_;
 };
 
-
-
-#endif
-
+#endif //EVENT_LOOP_THREAD_H
