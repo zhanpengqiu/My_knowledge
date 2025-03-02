@@ -6,6 +6,4 @@ void Timer::restart(Timestamp now){
     }else{
         expiration_ = addTime(now, interval_);
     }
-    // 重新注册到TimerQueue中
-    // ...
 }

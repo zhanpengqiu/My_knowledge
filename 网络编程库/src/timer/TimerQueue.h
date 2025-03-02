@@ -1,8 +1,6 @@
 #ifndef TIMER_QUEUE_H
 #define TIMER_QUEUE_H
 
-#include "noncopyable.h"
-
 #include "Timestamp.h"
 #include "Channel.h"
 

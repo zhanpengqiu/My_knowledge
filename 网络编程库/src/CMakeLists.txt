@@ -7,10 +7,17 @@ project(tiny_network C CXX)
 # 添加库文件搜索路径
 include_directories(
     ${PROJECT_SOURCE_DIR}/src/base
+    ${PROJECT_SOURCE_DIR}/src/net
+    ${PROJECT_SOURCE_DIR}/src/net/poller
+    ${PROJECT_SOURCE_DIR}/src/net/http
+    ${PROJECT_SOURCE_DIR}/src/timer
 )
 
 # 包含这些目录下的.cc文件
 aux_source_directory(${PROJECT_SOURCE_DIR}/src/base SRC_BASE)
+aux_source_directory(${PROJECT_SOURCE_DIR}/src/net SRC_NET)
+aux_source_directory(${PROJECT_SOURCE_DIR}/src/net/poller SRC_POLLER)
+aux_source_directory(${PROJECT_SOURCE_DIR}/src/timer SRC_TIMER)
 
 # 设置编译选项
 set{
@@ -23,6 +30,9 @@ set{
 # 生成动态库 tiny_network
 add_library(tiny_network SHARED 
             ${SRC_BASE}
+            ${SRC_NET}
+            ${SRC_POLLER}
+            ${SRC_TIMER}
             )
 
 # 目标动态库所需连接的库（这里需要连接libpthread.so）
