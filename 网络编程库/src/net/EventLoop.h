@@ -30,6 +30,16 @@ public:
     Timestamp pollReturnTime()const {return pollReturnTime_;}
 
     void runInLoop(Functor cb); // 在当前线程中执行cb
+    /**
+     * 把cb放入队列，唤醒loop所在的线程执行cb
+     * 
+     * 实例情况：
+     * 在mainLoop中获取subLoop指针，然后调用相应函数
+     * 在queueLoop中发现当前的线程不是创建这个subLoop的线程，将此函数装入subLoop的pendingFunctors容器中
+     * 之后mainLoop线程会调用subLoop::wakeup向subLoop的eventFd写数据，以此唤醒subLoop来执行pengdingFunctors
+     * 
+     * 将其他eventloop希望你执行的callback入队
+     */
     void queueInLoop(Functor cb); // 在当前线程中执行cb，并加入pendingFunctors_中
     void wakeup(); 
 
