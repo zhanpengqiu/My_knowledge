@@ -13,6 +13,7 @@
 /// +-------------------+------------------+------------------+
 /// |                   |                  |                  |
 /// 0      <=      readerIndex   <=   writerIndex    <=     size
+
 class Buffer{
 public:
     // prependable 初始大小，readIndex 初始位置
