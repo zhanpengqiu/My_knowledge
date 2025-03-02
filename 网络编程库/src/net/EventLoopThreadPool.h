@@ -12,6 +12,23 @@ class EventLoopThread;
 class EventLoopThreadPool {
 public:
     using ThreadInitCallback = std::function<void(EventLoop*)>;
+    EventLoopThreadPool(EventLoop *baseLoop,const std::string &name);
+    ~EventLoopThreadPool();
+
+    // 设置线程数量
+    void setThreadNum(int numThreads){
+        numThreads_ = numThreads;
+    };
+    // 开启线程池
+    void start(const ThreadInitCallback &cb = ThreadInitCallback());
+
+    // 获取下一个EventLoop,如果是多线程的状态下，那么会默认以轮训的方式分配Channel给子Loop
+    EventLoop *getNextLoop();
+
+    std::vector<EventLoop *> getAllLoops();
+
+    bool started()const {return started_;};
+    const std::string name()const {return name_;};
 
 private:
     EventLoop *baseLoop_; // 用户使用muduo创建的loop 如果线程数为1 那直接使用用户创建的loop 否则创建多EventLoop
