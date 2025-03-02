@@ -7,6 +7,7 @@
 #include "noncopyable.h"
 #include "Thread.h"
 
+
 class EventLoop;
 class EventLoopThread : noncopyable
 {
@@ -35,3 +36,4 @@ private:
 
 
 #endif
+
