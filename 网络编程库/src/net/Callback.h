@@ -10,7 +10,7 @@ class Timestamp;
 
 // 以下是TcpConnection的回调函数
 using TcpConnectionPtr=std::unique_ptr<TcpConnection>;
-using ConnectionCallback=std::function<void(const TcpConnectionPtr&)>;
+using ConnectionCallback = std::function<void(const TcpConnectionPtr&)>;
 using CloseCallback=std::function<void(const TcpConnectionPtr&)>;
 using WriteCompleteCallback=std::function<void(const TcpConnectionPtr&)>;
 using HighWaterMarkCallback=std::function<void(const TcpConnectionPtr&,size_t)>;

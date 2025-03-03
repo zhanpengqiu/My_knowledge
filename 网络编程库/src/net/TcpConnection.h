@@ -16,7 +16,7 @@ class Channel;
 class EventLoop;
 class Socket;
 
-class TcpConnection:noncopyable,
+class TcpConnection: noncopyable,
 public std::enable_shared_from_this<TcpConnection> {
 public: 
     TcpConnection(EventLoop* loop,
