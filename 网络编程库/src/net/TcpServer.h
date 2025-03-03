@@ -50,8 +50,8 @@ public:
 private:
     void newConnection(int sockfd, const InetAddress& address);
 
-    void removeConnection(const TcpConnection& connection);
-    void removeConnectionInLoop(const TcpConnection& connection);   
+    void removeConnection(const TcpConnectionPtr& connection);
+    void removeConnectionInLoop(const TcpConnectionPtr& connection);   
 
     /**
      * key:     std::string ///连接的名字
