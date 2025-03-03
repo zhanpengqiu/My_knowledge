@@ -33,6 +33,8 @@ EventLoop* EventLoopThread::startLoop(){
     {
         std::unique_lock<std::mutex> lock(mutex_);
         // lambda function
+        // 一直等待这个loop为有效的地址，如果为有效的，那么返回loop
+        // 如果不是有效的。那么会一直等待
         cond_.wait(lock, [&]{return loop_!=nullptr; });
         loop = loop_;
     }
@@ -49,7 +51,7 @@ void EventLoopThread::threadFunc(){
 
     {
         std::unique_lock<std::mutex> lock(mutex_);
-        loop_ = &loop;  // 等到生成EventLoop对象之后才唤醒
+        loop_ = &loop;  // 等到生成EventLoop对象之后才唤醒startLoop
         cond_.notify_one();
     }
     // 执行EventLoop的loop() 开启了底层的Poller的poll()
