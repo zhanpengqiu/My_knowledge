@@ -24,7 +24,17 @@ void Socket::listen(){
         std::cerr<<"bind sockfd:" << sockfd_ << " fail";
     }
 }
-
+// TODO:socket的各个设置的用法
+void Socket::shutdownWrite()
+{
+    /**
+     * 关闭写端，但是可以接受客户端数据
+     */
+    if (::shutdown(sockfd_, SHUT_WR) < 0)
+    {
+        std::cerr << "shutdownWrite error";
+    }
+}
 int Socket::accept(InetAddress* peerAddr){
     /**
      * 1. accept函数的参数不合法

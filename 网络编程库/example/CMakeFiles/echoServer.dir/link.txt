@@ -1,0 +1,1 @@
+/usr/bin/c++ -rdynamic CMakeFiles/echoServer.dir/echoServer.cc.o -o echoServer  -Wl,-rpath,/home/qzp/cpp_lab/设计模式/网络编程库/lib ../lib/libtiny_network.so -lpthread 

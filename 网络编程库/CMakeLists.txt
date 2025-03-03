@@ -20,12 +20,11 @@ aux_source_directory(${PROJECT_SOURCE_DIR}/src/net/poller SRC_POLLER)
 aux_source_directory(${PROJECT_SOURCE_DIR}/src/timer SRC_TIMER)
 
 # 设置编译选项
-set{
-    CXX_FLAGS
+set(CXX_FLAGS
     -g
     -Wall
-    -std=c++
-}
+    -std=c++11
+    )
 
 # 生成动态库 tiny_network
 add_library(tiny_network SHARED 
@@ -47,3 +46,6 @@ set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR})
 # 将目录安装到 include/tiny_network 下（只安装头文件）
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/src/ DESTINATION include/tiny_network
         FILES_MATCHING PATTERN "*.h")
+
+# 加载example
+add_subdirectory(example)
