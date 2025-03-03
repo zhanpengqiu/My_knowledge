@@ -4,7 +4,7 @@
 #include <memory>
 #include <string>
 #include <atomic>
-
+#include <string>
 
 #include "noncopyable.h"
 #include "Callback.h"
@@ -16,59 +16,56 @@ class Channel;
 class EventLoop;
 class Socket;
 
-class TcpConnection: noncopyable,
-public std::enable_shared_from_this<TcpConnection> {
-public: 
-    TcpConnection(EventLoop* loop,
-        const std::string&nameArg,
-        int sockfd,
-        const InetAddress& localAddr,
-        const InetAddress& peerAddr);
-
+class TcpConnection : noncopyable, 
+    public std::enable_shared_from_this<TcpConnection>
+{
+public:
+    TcpConnection(EventLoop *loop,
+                const std::string &nameArg,
+                int sockfd,
+                const InetAddress &localAddr,
+                const InetAddress &peerAddr);
     ~TcpConnection();
-    EventLoop* getLoop();
+
+    EventLoop* getLoop() const { return loop_; }
     const std::string& name() const { return name_; }
-    const InetAddress& getLocalAddress() const { return localAddr_; }
-    const InetAddress& getPeerAddress() const { return peerAddr_; }
+    const InetAddress& localAddress() const { return localAddr_; }
+    const InetAddress& peerAddress() const { return peerAddr_; }
 
-    bool connected()const { return state_==kConnected; }
-    void send(Buffer* buf);
-    void send(const std::string& buf);
+    bool connected() const { return state_ == kConnected; }
 
-    void shutdown();//关闭连接
+    // 发送数据
+    void send(const std::string &buf);
+    void send(Buffer *buf);
 
-    // 保存用户自定义回调函数
-    void setConnectionCallback(const ConnectionCallback& cb) {
-        connectionCallback_ = cb;
-    }
-    void setMessageCallback(const MessageCallback& cb) {
-        messageCallback_ = cb;
-    }
-    void setWriteCompleteCallback(const WriteCompleteCallback& cb) {
-        writeCompleteCallback_ = cb;
-    }
-    void setCloseCallback(const CloseCallback& cb) {
-        closeCallback_ = cb;
-    }
-    void setHighWaterMarkCallback(const HighWaterMarkCallback& cb, size_t highWaterMark) {
-        highWaterMarkCallback_ = cb;
-        highWaterMark_ = highWaterMark;
-    }
+    // 关闭连接
+    void shutdown();
 
-    // TcpServer 调用的函数
-    void connectEstablished(); //建立连接
-    void connectDestroyed(); // 撤销连接
-
+    // 保存用户自定义的回调函数
+    void setConnectionCallback(const ConnectionCallback &cb)
+    { connectionCallback_ = cb; }
+    void setMessageCallback(const MessageCallback &cb)
+    { messageCallback_ = cb; }
+    void setWriteCompleteCallback(const WriteCompleteCallback &cb)
+    { writeCompleteCallback_ = cb; }
+    void setCloseCallback(const CloseCallback &cb)
+    { closeCallback_ = cb; }
+    void setHighWaterMarkCallback(const HighWaterMarkCallback &cb, size_t highWaterMark)
+    { highWaterMarkCallback_ = cb; highWaterMark_ = highWaterMark; }
+    
+    // TcpServer会调用
+    void connectEstablished(); // 连接建立
+    void connectDestroyed();   // 连接销毁
 
 private:
-    enum StateE{
-        kConnecting,    //正在连接
-        kConnected,     //已连接
-        kDisconnecting, //正在断开连接
-        kDisconnected,  //已经断开连接
-    };
-
-    void setState(StateE state){state_=state;}
+    enum StateE
+    {
+        kDisconnected, // 已经断开连接
+        kConnecting,   // 正在连接
+        kConnected,    // 已连接
+        kDisconnecting // 正在断开连接
+    };    
+    void setState(StateE state) { state_ = state; }
 
     // 注册到channel上的回调函数，poller通知后会调用这些函数处理
     // 然后这些函数最后会再调用从用户那里传来的回调函数
@@ -77,22 +74,20 @@ private:
     void handleClose();
     void handleError();
 
-    void sendInLoop(const void* messafe, size_t len);
+    void sendInLoop(const void* message, size_t len);
     void sendInLoop(const std::string& message);
     void shutdownInLoop();
-
-
-
+    
     EventLoop *loop_;           // 属于哪个subLoop（如果是单线程则为mainLoop）
     const std::string name_;
-    std::atomic_int state_;
+    std::atomic_int state_;     // 连接状态
     bool reading_;
 
-    std::unique_ptr<Socket> socket_;
+    std::unique_ptr<Socket> socket_;;
     std::unique_ptr<Channel> channel_;
 
-    const InetAddress localAddr_;
-    const InetAddress peerAddr_;
+    const InetAddress localAddr_;   // 本服务器地址
+    const InetAddress peerAddr_;    // 对端地址
 
     /**
      * 用户自定义的这些事件的处理函数，然后传递给 TcpServer 
@@ -109,6 +104,4 @@ private:
     Buffer outputBuffer_;   // 发送数据的缓冲区
 };
 
-
-
-#endif //TCP_CONNECTION_H
+#endif // TCP_CONNECTION_H
