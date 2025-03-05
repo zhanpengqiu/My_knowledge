@@ -7,9 +7,11 @@ const int kDeleted = 2; // 某个channel已经从Poller删除
 
 // TODO:epoll_create1(EPOLL_CLOEXEC)
 EPollPoller::EPollPoller(EventLoop* eventLoop):
-Poller(eventLoop),
-epollfd_(::epoll_create1(EPOLL_CLOEXEC)),
-events_(kInitEventListSize) {
+    Poller(eventLoop),
+    epollfd_(::epoll_create1(EPOLL_CLOEXEC)),
+    events_(kInitEventListSize) 
+{
+    //创建fd句柄，epoll_create1
     if(epollfd_<0){
         std::cerr<< "epoll_create() error:" << std::endl;
     }    
@@ -20,6 +22,7 @@ EPollPoller::~EPollPoller(){
 }
 
 Timestamp EPollPoller::poll(int timeoutMs,ChannelList* activechannels){
+    // 设置超时事件
     size_t numEvents=::epoll_wait(epollfd_,&(*events_.begin()),static_cast<int>(events_.size()),timeoutMs);
     int savedErrno=errno;
     Timestamp now(Timestamp::now());
@@ -44,9 +47,11 @@ Timestamp EPollPoller::poll(int timeoutMs,ChannelList* activechannels){
     return now;
 }
 
+//改变Channel的状态，如有有需要注册或者删除epoll事件的时候，就调用这个函数
 void EPollPoller::updateChannel(Channel* channel){
     const int index=channel->index();
-
+    //判断信赖的channel是不是新的或者删除的channel，新的则加入到监听的channels中
+    // 一般是一个EVentLoop监听一组Channels
     if(index==kNew||index==kDeleted){
         // 添加到键值对
         if(index==kNew){
