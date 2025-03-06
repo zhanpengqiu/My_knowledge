@@ -13,6 +13,7 @@
 /home/qzp/cpp_lab/设计模式/网络编程库/include/tiny_network/net/EventLoopThreadPool.h
 /home/qzp/cpp_lab/设计模式/网络编程库/include/tiny_network/timer/TimerQueue.h
 /home/qzp/cpp_lab/设计模式/网络编程库/include/tiny_network/timer/Timer.h
+/home/qzp/cpp_lab/设计模式/网络编程库/include/tiny_network/memory/MemoryPool.h
 /home/qzp/cpp_lab/设计模式/网络编程库/include/tiny_network/base/ThreadPool.h
 /home/qzp/cpp_lab/设计模式/网络编程库/include/tiny_network/base/CurrentThread.h
 /home/qzp/cpp_lab/设计模式/网络编程库/include/tiny_network/base/noncopyable.h
