@@ -3,6 +3,7 @@
 
 using namespace std;
 
+
 class Singleton {
 public:
     static Singleton* getInstance(){
