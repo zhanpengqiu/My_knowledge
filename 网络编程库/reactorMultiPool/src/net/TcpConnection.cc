@@ -63,10 +63,13 @@ void TcpConnection::send(const std::string &buf)
 {
     if (state_ == kConnected)
     {
+        // 判断目标线程是不是在运行中，如果在运行中，那么直接sendInloop中就可以完成数据的发送任务
         if (loop_->isInLoopThread())
         {
             sendInLoop(buf.c_str(), buf.size());
         }
+        // 如果目标线程不再运行的情况，那么将这个sendinloop绑定到loop当中
+        // 等到目标线程起来了之后在运行这个发送程序。
         else
         {
             // 遇到重载函数的绑定，可以使用函数指针来指定确切的函数
@@ -223,6 +226,7 @@ void TcpConnection::handleRead(Timestamp receiveTime)
 {
     int savedErrno = 0;
     // TcpConnection会从socket读取数据，然后写入inpuBuffer
+    // 这里是一下子将数据读取出来。属于垂直触发
     ssize_t n = inputBuffer_.readFd(channel_->fd(), &savedErrno);
     if (n > 0)
     {

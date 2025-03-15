@@ -52,7 +52,16 @@
         "typeinfo": "cpp",
         "bit": "cpp",
         "map": "cpp",
-        "set": "cpp"
+        "set": "cpp",
+        "shared_mutex": "cpp",
+        "bitset": "cpp",
+        "csignal": "cpp",
+        "list": "cpp",
+        "unordered_set": "cpp",
+        "netfwd": "cpp",
+        "regex": "cpp",
+        "iomanip": "cpp",
+        "cinttypes": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled",
     "cmake.ignoreCMakeListsMissing": true
